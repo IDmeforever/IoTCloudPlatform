@@ -2,9 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import './plugins/element.js'
+// import './index.less'
+import './element-variables.scss'
 import router from './router'
 
 Vue.config.productionTip = false
+
+// import ElementUI
+// Vue.use(ElementUI)
 
 // Import Axios
 var axios = require('axios')

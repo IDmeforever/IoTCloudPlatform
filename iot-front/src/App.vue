@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <!-- <img src="./assets/logo.png"> -->
+    <h1>物联网云平台演示Demo</h1>
+    <h4>张子昂 MF1932251, 吴鑫 MF1932251, 王雪 MF1932251, 曹畅 MF1932251</h4>
     <router-view/>
   </div>
 </template>
