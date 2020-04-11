@@ -4,6 +4,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>场景详情</span>
+                <el-button style="float: right; padding: 3px 0" type="text">打开仪表盘</el-button>
                 <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
             </div>
             <el-row>
@@ -30,19 +31,27 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>设备列表</span>
-                <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+                <el-button style="float: right; padding: 3px 0" type="text">添加新设备组</el-button>
             </div>
             <el-row>
-                <el-col :span="4" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
+                <el-col :span="4" v-for="(item) in deviceGroup" :key="item" :offset="index > 0 ? 1 : 0" style="margin: 12px">
                     <el-card :body-style="{ padding: '0px' }">
-                    <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-                    <div style="padding: 14px;">
-                        <span>好吃的汉堡</span>
-                        <div class="bottom clearfix">
-                        <time class="time">{{ currentDate }}</time>
-                        <el-button type="text" class="button">操作按钮</el-button>
+                        <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3854073171,266127648&fm=26&gp=0.jpg" class="image">
+                        <div style="padding: 14px;">
+                            <span><b>{{item.name}}</b></span>
+                            <el-divider></el-divider>
+                            <div v-for="device in item.devices" :key="device" class="device-text">
+                                <p>{{device.name}}</p>
+                            </div>
+                            <el-divider></el-divider>
+                            <div class="bottom clearfix">
+                                <time class="time">{{ currentDate }}</time>
+                                <br><br>
+                                <el-button type="text" class="button:left">详情</el-button>
+                                <el-button type="text" class="button">编辑</el-button>
+                                <el-button type="text" class="button:right">删除</el-button>
+                            </div>
                         </div>
-                    </div>
                     </el-card>
                 </el-col>
             </el-row>
@@ -57,6 +66,57 @@ export default {
     data() {
         return {
             username: '',
+            currentDate: new Date(),
+            deviceGroup: [
+                {
+                    id:1, 
+                    name:'设备组1',
+                    devices: [
+                        {name: '温度检测器1', uuid:'123123123'},
+                        {name: '温度检测器2', uuid:'123123123'}
+                    ]
+                },
+                {
+                    id:2, 
+                    name:'设备组2',
+                    devices: [
+                        {name: '温度检测器1', uuid:'123123123'},
+                        {name: '温度检测器2', uuid:'123123123'}
+                    ]
+                },
+                {
+                    id:3, 
+                    name:'设备组3',
+                    devices: [
+                        {name: '温度检测器1', uuid:'123123123'},
+                        {name: '温度检测器2', uuid:'123123123'}
+                    ]
+                },
+                {
+                    id:4, 
+                    name:'设备组4',
+                    devices: [
+                        {name: '温度检测器1', uuid:'123123123'},
+                        {name: '温度检测器2', uuid:'123123123'}
+                    ]
+                },
+                {
+                    id:5, 
+                    name:'设备组5',
+                    devices: [
+                        {name: '温度检测器1', uuid:'123123123'},
+                        {name: '温度检测器2', uuid:'123123123'}
+                    ]
+                },
+                {
+                    id:6, 
+                    name:'设备组6',
+                    devices: [
+                        {name: '温度检测器1', uuid:'123123123'},
+                        {name: '温度检测器2', uuid:'123123123'}
+                    ]
+                },
+            ]
         }
     },
     created() {
@@ -106,7 +166,55 @@ export default {
         padding-left: 10%;
     }
 
+    .device-text {
+        text-align: left;
+        font-size: 14px;
+        padding-left: 10%;
+    }
+
   .tables-wrapper {
         text-align: left;
     }
+
+    .time {
+    font-size: 13px;
+    color: #999;
+  }
+  
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: center;
+  }
+
+  .button:left {
+    padding: 0;
+    text-align: left;
+    float: left;
+  }
+
+  .button:right {
+    padding: 0;
+    text-align: right;
+    float: right;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
+  }
 </style>
