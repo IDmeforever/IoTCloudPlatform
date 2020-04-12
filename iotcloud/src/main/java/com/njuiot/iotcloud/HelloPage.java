@@ -10,4 +10,8 @@ public class HelloPage {
     public String index() {
         return "NJU-IoT-Cloud-Platform.";
     }
+
+    public void test() {
+
+    }
 }

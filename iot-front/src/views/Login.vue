@@ -27,49 +27,53 @@
 </template>
 
 <script>
-  export default {
-    name: "Login",
-    data() {
-      return {
-        form: {
-          username: '',
-          password: ''
-        },
+    import {Decrypt,Encrypt} from '@/plugins/crypoto.js'
+    export default {
+        name: "Login",
+        data() {
+            return {
+                form: {
+                    username: '',
+                    password: ''
+                },
 
-        // 表单验证，需要在 el-form-item 元素中增加 prop 属性
-        rules: {
-          username: [
-            {required: true, message: '账号不可为空', trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '密码不可为空', trigger: 'blur'}
-          ]
-        },
+                // 表单验证，需要在 el-form-item 元素中增加 prop 属性
+                rules: {
+                username: [
+                    {required: true, message: '账号不可为空', trigger: 'blur'}
+                ],
+                password: [
+                    {required: true, message: '密码不可为空', trigger: 'blur'}
+                ]
+                },
 
-        // 对话框显示和隐藏
-        dialogVisible: false
-      }
-    },
-    methods: {
-      onSubmit(formName) {
-        // 为表单绑定验证功能
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-            this.$router.push({
-                // name: "Manage",
-                path: "/manage",
-                query: {
-                    username: this.form.username,
-                }
-            });
-          } else {
-            this.dialogVisible = true;
-            return false;
-          }
-        });
-      }
-    }
+                // 对话框显示和隐藏
+                dialogVisible: false
+            }
+        },
+        methods: {
+            onSubmit(formName) {
+                // 为表单绑定验证功能
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        console.log("原密码："+this.form.password);
+                        let encry = Encrypt(this.form.password);
+                        console.log("加密后："+encry);
+                        // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
+                        this.$router.push({
+                            // name: "Manage",
+                            path: "/manage",
+                            query: {
+                                username: this.form.username,
+                            }
+                        });
+                    } else {
+                        this.dialogVisible = true;
+                        return false;
+                    }
+                });
+            }
+        }
   }
 </script>
 
