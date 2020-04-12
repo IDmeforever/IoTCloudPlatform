@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 
 // Import Axios
 var axios = require('axios')
-axios.default.baseURL = 'http://192.168.2.103:8446/userCheck/'
+axios.default.baseURL = 'http://192.168.2.103:8446/api/'
 Vue.prototype.$axios = axios
 
 /* eslint-disable no-new */

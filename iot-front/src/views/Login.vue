@@ -61,18 +61,21 @@
                         // 进行登录验证
                         api.getAuthInfo(this.form.username, encrypt).then(
                             res => {
-                                console.log("Auth: "+res);
+                                console.log(res);
+                                if(res == true) {
+                                    // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
+                                    this.$router.push({
+                                        // name: "Manage",
+                                        path: "/manage",
+                                        query: {
+                                            username: this.form.username,
+                                        }
+                                    });
+                                } else {
+                                    console.log("验证未通过");
+                                }
                             }
                         )
-
-                        // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-                        // this.$router.push({
-                        //     // name: "Manage",
-                        //     path: "/manage",
-                        //     query: {
-                        //         username: this.form.username,
-                        //     }
-                        // });
                     } else {
                         this.dialogVisible = true;
                         return false;
