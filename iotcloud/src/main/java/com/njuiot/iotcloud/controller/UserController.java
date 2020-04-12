@@ -20,18 +20,17 @@ import java.nio.charset.StandardCharsets;
  */
 
 @RestController
-@RequestMapping("/userCheck")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping("getUser/{userName}")
+    @RequestMapping("/getUser/{userName}")
     public String GetUser(@PathVariable String userName) {
         return userService.Sel(userName).toString();
     }
 
-    @RequestMapping("login")
+    @RequestMapping("/api/login")
     public boolean getAuth(
             @RequestParam(value = "userName", required = true) String userName,
             @RequestParam(value = "Encrypt", required = true) String Encrypt) throws Exception {
@@ -40,7 +39,7 @@ public class UserController {
         String IV = "1234567890123456";
 
         String encryptPsw = AesEncryptUtil.encrypt(userService.Sel(userName).getPassWord(), KEY, IV);
-        
+
         if(Encrypt.equals(encryptPsw)) {
             return true;
         } else {

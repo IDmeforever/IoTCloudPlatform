@@ -42,6 +42,11 @@ export const api = {
 
     getAllCountryLatest: function(){
         return get("getAllCountryLatest", {})
+    },
+
+    // 云平台
+    getAuthInfo: function(userName, encrypt) {
+        return get("login", {userName:userName, Encrypt:encrypt })
     }
 
 
