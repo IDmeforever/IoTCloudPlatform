@@ -20,23 +20,69 @@
                     <el-form-item label="任务描述">
                         <el-input type="textarea" v-model="form.desc"></el-input>
                     </el-form-item>
+                    
                     <!-- 若为定时任务 -->
+                    <div v-if="form.region=='taskType1'">
+                        <el-form-item label="触发时间">
+                            <el-col :span="10">
+                                <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+                            </el-col>
+                            <el-col class="line" :span="2">-</el-col>
+                            <el-col :span="10">
+                                <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+                            </el-col>
+                        </el-form-item>
+                    </div>
 
                     <!-- 若为间隔时间任务 -->
+                    <div v-else-if="form.region=='taskType2'">
+                        <el-form-item label="间隔时间">
+                            <el-col :span="8">
+                                小时
+                                <el-input-number v-model="form.interval.hour" @change="handleChange" :min="0" :max="24" label="小时"></el-input-number>
+                            </el-col>
+                            <el-col :span="8">
+                                分钟
+                                <el-input-number v-model="form.interval.minute" @change="handleChange" :min="0" :max="60" label="分钟"></el-input-number>
+                            </el-col>
+                            <el-col :span="8">
+                                秒
+                                <el-input-number v-model="form.interval.second" @change="handleChange" :min="0" :max="60" label="秒"></el-input-number>
+                            </el-col>
+                        </el-form-item>
+                    </div>
 
-                    <!-- 若未触发型任务 -->
+                    <!-- 若为触发型任务 -->
+                    <div v-else-if="form.region=='taskType3'">
+                        <el-form-item label="触发条件">
+                            <el-col :span='4'>
+                            <el-select v-model="form.trigger.firstType" placeholder="设备">
+                                <el-option label="温度传感器" value="1"></el-option>
+                                <el-option label="湿度传感器" value="2"></el-option>
+                                <el-option label="机器人" value="3"></el-option>
+                            </el-select>
+                            </el-col>
+                            
+                            <el-col :span='4'>
+                            <el-select v-model="form.trigger.secondType" placeholder="值">
+                                <el-option label="高于" value="1"></el-option>
+                                <el-option label="低于" value="2"></el-option>
+                                <el-option label="等于" value="3"></el-option>
+                            </el-select>
+                            </el-col>
+                            <el-col :span='6'>
+                            <el-input v-model="form.trigger.value"></el-input>
+                            </el-col>
+                            被触发
+                        </el-form-item>
+                    </div>
 
-                    
-                    <el-form-item label="活动时间">
-                        <el-col :span="11">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-                        </el-col>
-                        <el-col class="line" :span="2">-</el-col>
-                        <el-col :span="11">
-                        <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-                        </el-col>
+                    <!-- 任务 -->
+                    <el-form-item label="任务详情">
+                        <el-input v-model="form.task"></el-input>
                     </el-form-item>
-                    <el-form-item label="即时配送">
+
+                    <!-- <el-form-item label="即时配送">
                         <el-switch v-model="form.delivery"></el-switch>
                     </el-form-item>
                     <el-form-item label="活动性质">
@@ -52,7 +98,7 @@
                         <el-radio label="线上品牌商赞助"></el-radio>
                         <el-radio label="线下场地免费"></el-radio>
                         </el-radio-group>
-                    </el-form-item>
+                    </el-form-item> -->
                     
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">立即创建</el-button>
@@ -77,16 +123,30 @@ export default {
                 delivery: false,
                 type: [],
                 resource: '',
-                desc: ''
+                desc: '',
+                interval: {
+                    hour: 0,
+                    minute: 0,
+                    second: 0
+                },
+                trigger: {
+                    firstType: '',
+                    secondType: '',
+                    value: '',
+                },
+                task: '',
             }
         }
     },
-    mounted: {
+    // mounted: {
 
-    },
+    // },
     methods: {
         onSubmit() {
             console.log('点击提交');
+        },
+        handleChange() {
+            console.log(this.form.interval.hour,", ",this.form.interval.minute, ", ", this.form.interval.second);
         }
     }
 }
