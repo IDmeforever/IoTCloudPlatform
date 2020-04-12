@@ -11,6 +11,10 @@ public class AllDeviceGroupModel {
     public static List<DeviceGroup> allDeviceGroup = new ArrayList<>();
 
     public AllDeviceGroupModel() {
+
+    }
+
+    public static List<DeviceGroup> getAllDeviceGroup(){
         Device d1 = new Device();
         d1.setName("设备1");
         d1.setUuid("d1");
@@ -27,5 +31,6 @@ public class AllDeviceGroupModel {
         dp1.setAllDevices(Arrays.asList(d1, d2));
 
         allDeviceGroup.add(dp1);
+        return allDeviceGroup;
     }
 }

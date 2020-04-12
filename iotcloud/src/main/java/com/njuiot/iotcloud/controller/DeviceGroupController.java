@@ -12,6 +12,6 @@ public class DeviceGroupController {
 
     @RequestMapping("/api/getAllDeviceGroup")
     public List<DeviceGroup> getAllDeviceGroup(){
-        return AllDeviceGroupModel.allDeviceGroup;
+        return AllDeviceGroupModel.getAllDeviceGroup();
     }
 }
