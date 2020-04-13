@@ -55,6 +55,10 @@ export const api = {
 
     removeDeviceGroup: function(id) {
         return get("deldevicegroup", {id: id});
+    },
+
+    sendMqttMsg: function(topic, message) {
+        return get("mqttsend", {topic: topic, message: message})
     }
 
 

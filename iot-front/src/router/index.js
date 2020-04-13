@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Manage from '../views/Manage.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Publish from '../views/Publish.vue'
+import MQTT from '../views/MQTT.vue'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/publish',
       name: 'Publish',
       component: Publish
+    },
+    {
+      path: '/mqtt',
+      name: 'MQTT',
+      component: MQTT
     }
   ]
 })
