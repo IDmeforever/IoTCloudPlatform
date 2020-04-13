@@ -2,7 +2,9 @@ import axios from 'axios'; // 引入axios
 import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据，后面会提到
 // vant的toast提示框组件，大家可根据自己的ui组件更改。
 //import store from '@/store/index';
-axios.defaults.baseURL = 'http://192.168.2.103:8446/api/';
+
+// axios.defaults.baseURL = 'http://192.168.2.103:8446/api/';
+axios.defaults.baseURL = 'http://127.0.0.1:8446/api/';
 // 环境的切换
 //if (process.env.NODE_ENV === 'development') {    
 //   axios.defaults.baseURL = '/api';} 

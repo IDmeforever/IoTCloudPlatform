@@ -73,6 +73,7 @@
                                     });
                                 } else {
                                     console.log("验证未通过");
+                                    this.onPswError();
                                 }
                             }
                         )
@@ -80,6 +81,17 @@
                         this.dialogVisible = true;
                         return false;
                     }
+                });
+            },
+            onPswError() {
+                this.$alert('用户名或密码错误，请重新输入', '登录错误', {
+                    confirmButtonText: '确定',
+                    // callback: action => {
+                    //     this.$message({
+                    //         type: 'info',
+                    //         message: `action: ${ action }`
+                    //     });
+                    // }
                 });
             }
         }

@@ -45,8 +45,16 @@ export const api = {
     },
 
     // 云平台
-    getAuthInfo: function(userName, encrypt) {
-        return get("login", {userName:userName, Encrypt:encrypt })
+    getAuthInfo: function(userName, Encrypt) {
+        return get("login", {userName:userName, Encrypt:Encrypt })
+    },
+
+    getAllDeviceGroup: function() {
+        return get("getAllDeviceGroup", {})
+    },
+
+    removeDeviceGroup: function(id) {
+        return get("deldevicegroup", {id: id});
     }
 
 

@@ -10,8 +10,10 @@ public class DeviceGroup {
 
     public List<String> getAllMessages() {
         List<String> allMsg = new ArrayList<>();
-        for(Device d: allDevices) {
-            allMsg.addAll(d.getMessages());
+        if(allDevices != null && allDevices.size()>0) {
+            for (Device d : allDevices) {
+                allMsg.addAll(d.getMessages());
+            }
         }
         return allMsg;
     }

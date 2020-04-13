@@ -31,36 +31,77 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>设备列表</span>
-                <el-button style="float: right; padding: 3px 0" type="text">添加新设备组</el-button>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="addDeviceGroup()">添加新设备组</el-button>
             </div>
             <el-row>
-                <el-col :span="4" v-for="(item) in deviceGroup" :key="item" :offset="index > 0 ? 1 : 0" style="margin: 12px">
+                <!-- <el-col :span="4" v-for="(item) in deviceGroup" :key="item.id" :offset="index > 0 ? 1 : 0" style="margin: 12px"> -->
+                <el-col :span="4" v-for="(item) in deviceGroup" :key="item.id" style="margin: 12px">
                     <el-card :body-style="{ padding: '0px' }">
                         <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3854073171,266127648&fm=26&gp=0.jpg" class="image">
                         <div style="padding: 14px;">
                             <span><b>{{item.name}}</b></span>
                             <el-divider></el-divider>
-                            <div v-for="device in item.devices" :key="device" class="device-text">
+                            <div v-for="device in item.devices" :key="device.uuid" class="device-text">
                                 <p>{{device.name}}</p>
                             </div>
                             <el-divider></el-divider>
                             <div class="bottom clearfix">
                                 <time class="time">{{ currentDate }}</time>
                                 <br><br>
-                                <el-button type="text" class="button:left">详情</el-button>
-                                <el-button type="text" class="button">编辑</el-button>
-                                <el-button type="text" class="button:right">删除</el-button>
+                                <el-button type="text" class="button:left" @click="showDeviceGroupDetails(item.id)">详情</el-button>
+                                <el-button type="text" class="button" @click="showEditDGDialog(item.id)">编辑</el-button>
+                                <el-button type="text" class="button:right" @click="delDevice(item.id)">删除</el-button>
                             </div>
                         </div>
                     </el-card>
                 </el-col>
             </el-row>
         </el-card>
+
+        <!-- 修改设备组详情表单 -->
+        <!-- Form -->
+        <el-dialog title="设备组详情" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="设备组名称" :label-width="formLabelWidth">
+                <el-input v-model="form.name" autocomplete="off"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="活动区域" :label-width="formLabelWidth">
+            <el-select v-model="form.region" placeholder="请选择活动区域">
+                <el-option label="区域一" value="shanghai"></el-option>
+                <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+            </el-form-item> -->
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="editDeviceGroup()">确 定</el-button>
+        </div>
+        </el-dialog>
+
+        <!-- 添加设备组详情表单 -->
+        <el-dialog title="添加一个新的设备组" :visible.sync="addDialogVisible">
+            <el-form :model="newDeviceGroup">
+                <el-form-item label="设备组名称" :label-width="formLabelWidth">
+                    <el-input v-model="newDeviceGroup.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="设备组id" :label-width="formLabelWidth">
+                    <el-input v-model="newDeviceGroup.id" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="设备列表" :label-width="formLabelWidth">
+                    <el-input v-model="newDeviceGroup.stringDevices" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="addDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="confirmAddDeviceGroup()">确 定</el-button>
+            </div>
+        </el-dialog>
         
     </div>
 </template>
 
 <script>
+import {api} from '../request/api'
 export default {
     name: 'Manage',
     data() {
@@ -72,55 +113,79 @@ export default {
                     id:1, 
                     name:'设备组1',
                     devices: [
-                        {name: '温度检测器1', uuid:'123123123'},
-                        {name: '温度检测器2', uuid:'123123123'}
+                        {name: '温度检测器1', uuid:'100001'},
+                        {name: '温度检测器2', uuid:'100002'}
                     ]
                 },
                 {
                     id:2, 
                     name:'设备组2',
                     devices: [
-                        {name: '温度检测器1', uuid:'123123123'},
-                        {name: '温度检测器2', uuid:'123123123'}
+                        {name: '温度检测器1', uuid:'101001'},
+                        {name: '温度检测器2', uuid:'101002'}
                     ]
                 },
                 {
                     id:3, 
                     name:'设备组3',
                     devices: [
-                        {name: '温度检测器1', uuid:'123123123'},
-                        {name: '温度检测器2', uuid:'123123123'}
+                        {name: '温度检测器1', uuid:'102001'},
+                        {name: '温度检测器2', uuid:'102002'}
                     ]
                 },
                 {
                     id:4, 
                     name:'设备组4',
                     devices: [
-                        {name: '温度检测器1', uuid:'123123123'},
-                        {name: '温度检测器2', uuid:'123123123'}
+                        {name: '温度检测器1', uuid:'103001'},
+                        {name: '温度检测器2', uuid:'103002'}
                     ]
                 },
                 {
                     id:5, 
                     name:'设备组5',
                     devices: [
-                        {name: '温度检测器1', uuid:'123123123'},
-                        {name: '温度检测器2', uuid:'123123123'}
+                        {name: '温度检测器1', uuid:'104001'},
+                        {name: '温度检测器2', uuid:'104002'}
                     ]
                 },
                 {
                     id:6, 
                     name:'设备组6',
                     devices: [
-                        {name: '温度检测器1', uuid:'123123123'},
-                        {name: '温度检测器2', uuid:'123123123'}
+                        {name: '温度检测器1', uuid:'105001'},
+                        {name: '温度检测器2', uuid:'105002'}
                     ]
                 },
-            ]
+            ],
+            dialogFormVisible: false,
+            form: {
+                name: '',
+                region: '',
+                date1: '',
+                date2: '',
+                delivery: false,
+                type: [],
+                resource: '',
+                desc: ''
+            },
+            formLabelWidth: '120px',
+            curEditDGID: 0,
+            addDialogVisible: false,
+            newDeviceGroup: {
+                id: -1,
+                name: '',
+                stringDevices: '',
+                devices: [
+
+                ]
+            }
+
         }
     },
     created() {
         this.getParams();
+        this.initGroups();
     },
     watch: {
         '$route': 'getParams()',
@@ -129,6 +194,139 @@ export default {
         getParams() {
             console.log(this.$route.query.username);
             this.username = this.$route.query.username;
+        },
+        initGroups() {
+            api.getAllDeviceGroup().then(
+                res => {
+                    console.log(res);
+                    console.log(res.length);
+                    let deviceGroupArr = [];
+                    for(let singleGroup of res) {
+                        deviceGroupArr.push({
+                            id: singleGroup.id,
+                            name: singleGroup.name,
+                            devices: singleGroup.allDevices,
+                            allmsg: singleGroup.allMessages,
+                        })
+                    }
+                    this.deviceGroup = deviceGroupArr;
+                }
+            )
+        },
+        showDeviceGroupDetails(id) {
+            let foundElement = this.deviceGroup.find(function(x){
+                return x.id == id;
+            })
+            this.$alert(foundElement.allmsg, '设备组id: '+id+'信息：', {
+                    confirmButtonText: '确定',
+            });
+        },
+        showEditDGDialog(id) {
+            this.dialogFormVisible = true;
+            this.curEditDGID = id;
+            console.log("cur ID: "+this.curEditDGID)
+            // 表单默认内容
+            let foundElement = this.getDeviceGroup();
+            this.form.name = foundElement.name;
+        },
+        getDeviceGroup() {
+            let tmp = this.curEditDGID;
+            let foundElement = this.deviceGroup.find(function(x){
+                return x.id == tmp;
+            })
+            return foundElement;
+        },
+        editDeviceGroup(){
+            this.dialogFormVisible = false;
+            let foundElement = this.getDeviceGroup();
+            this.$axios
+            .post('modifieddevicegroup', {
+                id: this.curEditDGID,
+                name: this.form.name,
+                devices: foundElement.devices
+            })
+            .then(successResponse => {
+                if(successResponse) {
+                    // 更新列表
+                    this.initGroups();
+                    this.$message('修改成功');
+                } else {
+                    this.$message('修改失败');
+                }
+            })
+            // eslint-disable-next-line no-unused-vars
+            .catch(failResponse => {
+            })
+        },
+        delDevice(id){
+            // 对话框确认
+            this.$confirm('确认要删除id为'+id+'的设备组？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                // 发送删除请求
+                api.removeDeviceGroup(id).then (
+                    res => {
+                        if(res) {
+                            // 更新设备组
+                            this.initGroups();
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        } else {
+                            this.$message({
+                                type: 'info',
+                                message: '查找不到此设备组，删除失败'
+                            }); 
+                        }
+                    }
+                )
+                
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });          
+            });
+        },
+        addDeviceGroup() {
+            this.addDialogVisible = true;
+        },
+        confirmAddDeviceGroup() {
+            this.addDialogVisible = false;
+            let ds = this.newDeviceGroup.stringDevices.split(";");
+            let devices1 = [];
+            for(let d of ds) {
+                let ran = Math.floor(Math.random()*1000000)
+                devices1.push({
+                    name: d,
+                    uuid: ran,
+                    messages: ['init device.']
+                })
+            }
+            // 发送添加
+            this.$axios
+            .post('adddevicegroup', {
+                id: this.newDeviceGroup.id,
+                name: this.newDeviceGroup.name,
+                allDevices: devices1
+            })
+            .then(successResponse => {
+                if(successResponse) {
+                    // 更新列表
+                    this.initGroups();
+                    this.$message('添加成功');
+                } else {
+                    this.$message('添加失败');
+                }
+            })
+            // eslint-disable-next-line no-unused-vars
+            .catch(failResponse => {
+            })
+
+            this.$message('添加了一个设备组');
         }
     }
 }
