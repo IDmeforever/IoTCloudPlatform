@@ -63,6 +63,9 @@
                             res => {
                                 console.log(res);
                                 if(res == true) {
+                                    // 存储一个验证通过的本地变量
+                                    let storage = window.localStorage;
+                                    storage.setItem("token", "true");
                                     // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
                                     this.$router.push({
                                         // name: "Manage",

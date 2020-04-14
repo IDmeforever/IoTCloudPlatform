@@ -55,7 +55,24 @@ export default {
             }
         }
     },
+    created() {
+        this.checkToken()
+    },
     methods: {
+        checkToken(){
+            let storage = window.localStorage;
+            if(storage.getItem("token")!="true") {
+                this.$alert('尚未登录，请登录后进行查看', '请登录', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        this.$router.push({
+                            // name: "Manage",
+                            path: "/login",
+                        });
+                    }
+                });
+            }
+        },
         onSubmit() {
             api.sendMqttMsg(this.mqttForm.mqtttopic, this.mqttForm.mqttmessage).then(
                 res => {

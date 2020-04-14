@@ -7,6 +7,7 @@ import Manage from '../views/Manage.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Publish from '../views/Publish.vue'
 import MQTT from '../views/MQTT.vue'
+import Map from '../views/Map.vue'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/mqtt',
       name: 'MQTT',
       component: MQTT
+    },
+    {
+      path: '/map',
+      name: 'Map',
+      component: Map
     }
   ]
 })

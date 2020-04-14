@@ -59,6 +59,18 @@ export const api = {
 
     sendMqttMsg: function(topic, message) {
         return get("mqttsend", {topic: topic, message: message})
+    },
+
+    getAllMsgs: function() {
+        return get("getAllMsg", {})
+    },
+
+    addDashboard: function(name, value) {
+        return get("adddashboard", {name: name, value: value})
+    },
+
+    getAllRobots: function() {
+        return get("getallrobots", {})
     }
 
 

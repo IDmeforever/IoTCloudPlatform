@@ -14,6 +14,15 @@ public class AllDeviceGroupModel {
 
     }
 
+    public static List<String> getAllMsgs(){
+        getAllDeviceGroup();
+        List<String> allmsg = new ArrayList<>();
+        for(DeviceGroup deviceGroup: allDeviceGroup) {
+            allmsg.addAll(deviceGroup.getAllMessages());
+        }
+        return allmsg;
+    }
+
     public static List<DeviceGroup> getAllDeviceGroup(){
         if(allDeviceGroup.size()==0) {
             Device d1 = new Device();

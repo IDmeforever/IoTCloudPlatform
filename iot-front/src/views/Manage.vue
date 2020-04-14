@@ -4,7 +4,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>场景详情</span>
-                <el-button style="float: right; padding: 3px 0" type="text">打开仪表盘</el-button>
+                <!-- <el-button style="float: right; padding: 3px 0" type="text">打开仪表盘</el-button> -->
                 <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
             </div>
             <el-row>
@@ -13,11 +13,11 @@
                 </el-col>
                 <el-col :span="10" class="card-text">
                     <h3>描述</h3>
-                    <p>物联网云平台管理系统</p>
-                    <p>在这个平台中，可以对设备列表进行查看，并可以添加设备，删除设备，并可以对设备的情况进行查看，观察物联网系统的整体运行情况</p>
+                    <p>包裹机器人物联网云平台管理系统</p>
+                    <p>在这个平台中，可以对包裹机器人设备列表进行查看，并可以添加设备，删除设备，并可以对设备的传感器情况进行查看，观察物联网系统的整体运行情况</p>
                 </el-col>
                 <el-col :span="10" class="card-text">
-                    <p><b>名称：</b>物联网云平台管理系统</p>
+                    <p><b>名称：</b>包裹机器人物联网云平台管理系统</p>
                     <p><b>创建时间：</b>2020年04月11日</p>
                 </el-col>
             </el-row>
@@ -184,6 +184,7 @@ export default {
         }
     },
     created() {
+        this.checkToken();
         this.getParams();
         this.initGroups();
     },
@@ -191,6 +192,20 @@ export default {
         '$route': 'getParams()',
     },
     methods: {
+        checkToken(){
+            let storage = window.localStorage;
+            if(storage.getItem("token")!="true") {
+                this.$alert('尚未登录，请登录后进行查看', '请登录', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        this.$router.push({
+                            // name: "Manage",
+                            path: "/login",
+                        });
+                    }
+                });
+            }
+        },
         getParams() {
             console.log(this.$route.query.username);
             this.username = this.$route.query.username;
@@ -303,7 +318,7 @@ export default {
                 devices1.push({
                     name: d,
                     uuid: ran,
-                    messages: ['init device.']
+                    messages: ['init device. ['+ran+']']
                 })
             }
             // 发送添加

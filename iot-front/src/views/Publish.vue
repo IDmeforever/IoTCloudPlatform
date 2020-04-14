@@ -20,7 +20,7 @@
                     <el-form-item label="任务描述">
                         <el-input type="textarea" v-model="form.desc"></el-input>
                     </el-form-item>
-                    
+
                     <!-- 若为定时任务 -->
                     <div v-if="form.region=='taskType1'">
                         <el-form-item label="触发时间">
@@ -59,7 +59,7 @@
                             <el-select v-model="form.trigger.firstType" placeholder="设备">
                                 <el-option label="温度传感器" value="1"></el-option>
                                 <el-option label="湿度传感器" value="2"></el-option>
-                                <el-option label="机器人" value="3"></el-option>
+                                <el-option label="加速度传感器" value="3"></el-option>
                             </el-select>
                             </el-col>
                             
@@ -111,6 +111,8 @@
 </template>
 
 <script>
+import {api} from '../request/api'
+
 export default {
     name: 'Publish',
     data() {
@@ -138,12 +140,56 @@ export default {
             }
         }
     },
-    // mounted: {
-
-    // },
+    created() {
+        this.checkToken();
+    },
     methods: {
+        checkToken(){
+            let storage = window.localStorage;
+            if(storage.getItem("token")!="true") {
+                this.$alert('尚未登录，请登录后进行查看', '请登录', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        this.$router.push({
+                            // name: "Manage",
+                            path: "/login",
+                        });
+                    }
+                });
+            }
+        },
         onSubmit() {
             console.log('点击提交');
+            let taskCondition = '';
+            if(this.form.region=='taskType1') {
+                taskCondition = this.form.date1+','+this.form.date2;
+            } else if (this.form.region == 'taskType2') {
+                taskCondition = this.form.interval.hour+','+this.form.interval.minute+','+this.form.interval.second;
+            } else {
+                taskCondition = this.form.trigger.firstType+','+this.form.trigger.secondType+','+this.form.trigger.value;
+            }
+            // 发送添加
+            this.$axios
+            .post('addtask', {
+                taskName: this.form.name,
+                taskType: this.form.region,
+                taskDescribe: this.form.desc,
+                taskCondition: taskCondition,
+                taskDetail: this.form.task
+            })
+            .then(successResponse => {
+                if(successResponse) {
+                    // 更新列表
+                    this.$message('添加成功');
+                } else {
+                    this.$message('添加失败');
+                }
+            })
+            // eslint-disable-next-line no-unused-vars
+            .catch(failResponse => {
+            })
+
+            this.$message('发布任务成功');
         },
         handleChange() {
             console.log(this.form.interval.hour,", ",this.form.interval.minute, ", ", this.form.interval.second);
